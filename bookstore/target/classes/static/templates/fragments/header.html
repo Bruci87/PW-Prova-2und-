@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> <header th:fragment="header">
+    <div id="top-header">
+        <div class="container">
+            <ul class="header-links pull-left">
+                <li><a href="#"><i class="fa fa-phone"></i> +55 (84) 9999-9999</a></li>
+                <li><a href="#"><i class="fa fa-envelope-o"></i> eaj@ufrn.br</a></li>
+                <li><a href="#"><i class="fa fa-map-marker"></i> Macaíba, RN</a></li>
+            </ul>
+
+            <ul class="header-links pull-right">
+                <li sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}"><i class="fa fa-user-o"></i> Login</a>
+                </li>
+
+                <li sec:authorize="isAuthenticated()" style="display: inline-block; margin-right: 15px;">
+                    <span style="color: #FFF; font-weight: 700;">
+                        <i class="fa fa-user"></i> Olá, <span sec:authentication="name" style="color: #D10024;">Usuário</span>!
+                    </span>
+                </li>
+
+                <li sec:authorize="isAuthenticated()" style="display: inline-block;">
+                    <a th:href="@{/logout}" style="color: #FFF; font-weight: 700;">
+                        <i class="fa fa-sign-out"></i> Sair
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="header-logo">
+                        <a th:href="@{/index}" class="logo">
+                            <h2 style="color: white; margin-top: 15px;">Livraria<span style="color: #D10024;">EAJ</span></h2>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-6" style="margin-top: 15px;">
+                    <ul class="main-nav nav navbar-nav" style="display: flex; flex-direction: row; gap: 15px;">
+                        <li><a th:href="@{/index}">Início</a></li>
+
+                        <li sec:authorize="hasRole('ADMIN')">
+                            <a th:href="@{/admin}" style="color: #D10024; font-weight: 700;">Painel Admin</a>
+                        </li>
+                        <li sec:authorize="hasRole('ADMIN')">
+                            <a th:href="@{/cadastro}">Cadastrar Livro</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3 clearfix">
+                    <div class="header-ctn" style="float: right; margin-top: 15px;">
+                        <div>
+                            <a th:href="@{/verCarrinho}">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span>Meu Carrinho</span>
+                                <div class="qty" th:text="${session.carrinho != null ? session.carrinho.size() : 0}">0</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+</html>

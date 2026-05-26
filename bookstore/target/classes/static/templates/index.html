@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: mainLayout('Vitrine de Livros', ~{:: #conteudoIndex})}">
+
+<div id="conteudoIndex">
+
+    <div th:if="${mensagemSucesso}" class="alert alert-success alert-dismissible" role="alert" style="border-radius: 0; font-weight: 700; margin-bottom: 20px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <i class="fa fa-check-circle"></i> <span th:text="${mensagemSucesso}"></span>
+    </div>
+
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-12">
+            <h2 class="title" style="text-transform: uppercase; border-bottom: 2px solid #D10024; padding-bottom: 10px;">
+                Livros Disponíveis
+            </h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-xs-6" th:each="livro : ${livros}" style="margin-bottom: 30px;">
+            <div class="product" style="border: 1px solid #E4E7ED; padding: 15px; text-align: center; background: #FFF; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+
+                <div class="product-img" style="height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                    <img th:src="@{${livro.imgUrl}}" alt="Capa do Livro" style="max-height: 100%; max-width: 100%;">
+                </div>
+
+                <div class="product-body">
+                    <p class="product-category" th:text="${livro.category}" style="text-transform: uppercase; font-size: 11px; color: #8D99AE; margin: 0;"></p>
+
+                    <h3 class="product-name" style="font-size: 14px; margin: 5px 0 10px 0;">
+                        <a th:href="@{/detalhe/{id}(id=${livro.id})}" th:text="${livro.title}" style="font-weight: 700; color: #2B2D42; text-decoration: none;"></a>
+                    </h3>
+
+                    <h4 class="product-price" th:text="'R$ ' + ${#numbers.formatDecimal(livro.price, 1, 'POINT', 2, 'COMMA')}" style="color: #D10024; font-size: 18px; margin-bottom: 10px;"></h4>
+                    <p class="product-author" th:text="'Autor: ' + ${livro.author}" style="font-size: 13px; color: #2B2D42; margin-bottom: 2px;"></p>
+                    <p class="small text-muted" th:text="'ISBN: ' + ${livro.isbn}"></p>
+                </div>
+
+                <div class="add-to-cart" style="margin-top: 15px;">
+                    <a th:href="@{/adicionarCarrinho(id=${livro.id})}" class="btn btn-danger" style="background-color: #D10024; border-radius: 4px; font-weight: 700; width: 100%;">
+                        <i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px; border-top: 1px solid #E4E7ED; padding-top: 20px;">
+        <div class="col-md-12 text-right">
+            <a th:href="@{/verCarrinho}" class="btn btn-default" style="font-weight: 700; border: 1px solid #E4E7ED;">
+                <i class="fa fa-eye"></i> Ver Carrinho (<span th:text="${qtdCarrinho}">0</span>)
+            </a>
+        </div>
+    </div>
+</div>
+</html>

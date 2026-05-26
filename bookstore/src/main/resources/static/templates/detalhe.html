@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: mainLayout('Detalhes do Livro', ~{:: #conteudoDetalhe})}">
+
+<div id="conteudoDetalhe">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-md-12">
+            <a th:href="@{/index}" class="btn btn-default" style="margin-bottom: 15px; font-weight: 700; border: 1px solid #E4E7ED;">
+                <i class="fa fa-arrow-left"></i> Voltar para a Vitrine
+            </a>
+        </div>
+    </div>
+
+    <div class="row" style="background: #FFF; padding: 30px; border: 1px solid #E4E7ED; border-radius: 4px;">
+        <div class="col-md-4 text-center">
+            <img th:src="${livro.imgUrl}" alt="Capa do Livro" class="img-responsive" style="max-height: 350px; margin: 0 auto; box-shadow: 0px 4px 15px rgba(0,0,0,0.1);" />
+        </div>
+
+        <div class="col-md-8">
+            <h2 th:text="${livro.title}" style="color: #2B2D42; font-weight: 700; margin-top: 0;">Título do Livro</h2>
+            <p style="font-size: 16px; color: #8D99AE;">Por: <strong th:text="${livro.author}" style="color: #D10024;">Autor</strong></p>
+
+            <hr style="border-top: 1px solid #E4E7ED;" />
+
+            <div style="margin-bottom: 20px; font-size: 15px;">
+                <p><strong>Categoria:</strong> <span th:text="${livro.category}">Tecnologia</span></p>
+                <p><strong>ISBN:</strong> <span th:text="${livro.isbn}">000-0-00-000000-0</span></p>
+                <p><strong>Código Identificador (ID):</strong> #<span th:text="${livro.id}">1</span></p>
+            </div>
+
+            <div style="background: #FBFBFC; padding: 20px; border-left: 4px solid #D10024; margin-bottom: 20px;">
+                <span style="font-size: 14px; text-transform: uppercase; color: #8D99AE; font-weight: 700;">Preço do Item</span>
+                <h3 style="margin: 5px 0 0 0; color: #2B2D42; font-weight: 700;">
+                    R$ <span th:text="${#numbers.formatDecimal(livro.price, 1, 'POINT', 2, 'COMMA')}">0,00</span>
+                </h3>
+            </div>
+
+            <a th:href="@{/adicionarCarrinho(id=${livro.id})}" class="btn btn-danger" style="background-color: #D10024; font-weight: 700; padding: 10px 25px; border-radius: 0;">
+                <i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho
+            </a>
+        </div>
+    </div>
+</div>
+</html>
