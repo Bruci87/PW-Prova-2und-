@@ -26,7 +26,7 @@ public class SecurityConfig {
         UserDetails admin = User.builder()
                 .username("admin")
                 .password(encoder.encode("admin123"))
-                .roles("ADMIN") // Spring Security adiciona o prefixo "ROLE_" automaticamente aqui ("ROLE_ADMIN")
+                .roles("ADMIN")
                 .build();
 
         UserDetails visitante = User.builder()
@@ -39,15 +39,15 @@ public class SecurityConfig {
     }
 
     // =========================================================================
-    // QUESTÃO 15: Filtros de Acesso (RBAC) e FormLogin
+    // QUESTÃO 15: Filtros de Acesso (RBAC) e FormLogin (SUBSTITUÍDO AQUI)
     // =========================================================================
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 // 1. Configuração das regras de autorização de requisições (Túnel de Filtros)
                 .authorizeHttpRequests(authorize -> authorize
-                        // Libera arquivos estáticos (CSS, JS, Imagens das capas) para que a tela de login não fique feia/desconfigurada
-                        .requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/vendor/**").permitAll()
+                        // CORRIGIDO: Liberados arquivos estáticos, a imagem local capa.jpg e as rotas de compras
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/vendor/**", "/capa.jpg", "/index", "/verCarrinho", "/adicionarCarrinho", "/detalhe/**").permitAll()
 
                         // Exigência da Q15: Rotas de cadastro, salvamento, edição, exclusão e restauração exclusivas do ADMIN
                         .requestMatchers("/admin", "/cadastro", "/salvar", "/editar", "/deletar", "/restaurar").hasRole("ADMIN")

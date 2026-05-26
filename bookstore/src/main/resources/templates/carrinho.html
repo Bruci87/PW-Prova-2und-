@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Meu Carrinho de Compras</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="container mt-5">
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2 class="fw-bold text-uppercase d-flex align-items-center" style="color: #15161D; font-size: 24px; border-bottom: 2px solid #E4E7ED; padding-bottom: 15px;">
+                <i class="fa fa-shopping-cart me-3" style="color: #D10024;"></i> Itens no meu Carrinho
+            </h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-0 shadow-sm" style="background: #FFF; border-radius: 6px; overflow: hidden;">
+                <div class="card-body p-0">
+
+                    <table class="table table-hover mb-0" style="vertical-align: middle;">
+                        <thead>
+                        <tr style="background-color: #15161D; color: #FFF; font-size: 13px; text-transform: uppercase;">
+                            <th style="width: 120px;" class="text-center py-3 px-4">Capa</th>
+                            <th class="py-3">Título do Livro</th>
+                            <th class="py-3">Autor</th>
+                            <th class="py-3">Categoria</th>
+                            <th class="text-end py-3 px-4" style="width: 150px;">Preço</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${itensCarrinho}" style="border-bottom: 1px solid #F0F0F0; transition: 0.2s;">
+                            <td class="text-center py-3 px-4">
+                                <div style="background: #fcfcfc; padding: 5px; border-radius: 4px; border: 1px solid #E4E7ED; display: inline-block;">
+                                    <img th:src="@{/capa.jpg}" alt="Capa" style="max-height: 70px; max-width: 50px; object-fit: contain; display: block; margin: 0 auto;" />
+                                </div>
+                            </td>
+                            <td class="py-3 fw-bold" style="color: #15161D; font-size: 15px;" th:text="${item.title}"></td>
+                            <td class="py-3 text-secondary" style="font-size: 14px;" th:text="${item.author}"></td>
+                            <td class="py-3"><span class="badge bg-light text-dark border text-uppercase" style="font-size: 11px; font-weight: 600; padding: 5px 10px;" th:text="${item.category}">Categoria</span></td>
+                            <td class="text-end py-3 px-4 fw-bold" style="color: #D10024; font-size: 16px;"
+                                th:text="'R$ ' + ${item.price ?: 0.00}"></td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(itensCarrinho)}">
+                            <td colspan="5" class="text-center py-5 text-muted" style="background: #FAF9F9;">
+                                <i class="fa fa-shopping-basket fa-3x mb-3 text-muted" style="opacity: 0.4;"></i>
+                                <p class="mb-1 fw-bold" style="font-size: 16px; color: #15161D;">Seu carrinho está vazio no momento</p>
+                                <small class="text-secondary d-block mb-3">Navegue pela nossa vitrine para adicionar excelentes leituras.</small>
+                                <a th:href="@{/index}" class="btn btn-sm text-white text-uppercase fw-bold px-3 py-2" style="background-color: #15161D; font-size: 12px; border-radius: 4px;">
+                                    <i class="fa fa-arrow-left me-1"></i> Ir para a Vitrine
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div th:if="${!#lists.isEmpty(itensCarrinho)}" class="p-4 d-flex flex-column flex-md-row justify-content-between align-items-center" style="background: #FBFBFC; border-top: 1px solid #E4E7ED;">
+                        <div>
+                            <a th:href="@{/index}" class="btn btn-outline-secondary text-uppercase fw-bold px-4 py-2" style="font-size: 13px; border-radius: 4px;">
+                                <i class="fa fa-arrow-left me-2"></i> Continuar Comprando
+                            </a>
+                        </div>
+
+                        <div class="text-center text-md-end mt-4 mt-md-0">
+                            <div class="mb-3">
+                                <span class="text-uppercase text-muted fw-bold" style="font-size: 12px; letter-spacing: 1px;">Total do Pedido:</span>
+                                <h3 class="fw-bold m-0 mt-1" style="color: #D10024; font-size: 28px;"
+                                    th:text="'R$ ' + ${totalGeral ?: 0.00}">R$ 0,00</h3>
+                            </div>
+
+                            <a th:href="@{/finalizarCompra}" class="btn text-white text-uppercase fw-bold px-5 py-3 shadow-sm"
+                               style="background-color: #D10024; font-size: 14px; border-radius: 4px; letter-spacing: 0.5px;">
+                                <i class="fa fa-check me-2"></i> Finalizar Compra
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

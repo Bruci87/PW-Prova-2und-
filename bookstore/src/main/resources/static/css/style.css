@@ -1,0 +1,24 @@
+/* Cor padrão do e-commerce (Preto e Vermelho do Admin) */
+body {
+    background-color: #F4F7F6;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Customização dos Cards da Vitrine */
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12) !important;
+}
+
+/* Botão padrão da loja */
+.btn-store {
+    background-color: #D10024;
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.btn-store:hover {
+    background-color: #a8001c;
+    color: white;
+}

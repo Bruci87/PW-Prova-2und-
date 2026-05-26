@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Painel Administrativo</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="container mt-4">
+
+    <div class="row" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+        <div class="col-md-6">
+            <h2 style="text-transform: uppercase; margin: 0;">Gerenciamento de Livros</h2>
+        </div>
+        <div class="col-md-6 text-end"> <a th:href="@{/cadastro}" class="btn btn-danger" style="background-color: #D10024; font-weight: 700;">
+            <i class="fa fa-plus"></i> Novo Cadastro
+        </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" style="background: #FFF;">
+                    <thead>
+                    <tr style="background-color: #15161D; color: white;">
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>ISBN</th>
+                        <th>Preço</th>
+                        <th>Categoria</th>
+                        <th>Status</th>
+                        <th class="text-center" style="width: 250px;">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="livro : ${livros}" th:style="${livro.isDeleted != null} ? 'opacity: 0.6; background-color: #f9f2f2;' : ''">
+                        <td th:text="${livro.id}" style="font-weight: 700;"></td>
+                        <td th:text="${livro.title}"></td>
+                        <td th:text="${livro.author}"></td>
+                        <td th:text="${livro.isbn}"></td>
+
+                        <td th:text="'R$ ' + ${#numbers.formatDecimal(livro.price, 1, 2)}"></td>
+
+                        <td th:text="${livro.category}"></td>
+                        <td>
+                            <span th:if="${livro.isDeleted == null}" class="badge bg-success">Ativo</span>
+                            <span th:if="${livro.isDeleted != null}" class="badge bg-danger" th:title="'Deletado em: ' + ${livro.isDeleted}">Excluído</span>
+                        </td>
+                        <td class="text-center">
+                            <a th:href="@{/editar(id=${livro.id})}" class="btn btn-xs btn-default" title="Editar">
+                                <i class="fa fa-pencil"></i> Editar
+                            </a>
+
+                            <a th:if="${livro.isDeleted == null}" th:href="@{/deletar(id=${livro.id})}" class="btn btn-xs btn-danger" style="background-color: #D10024;" title="Deletar">
+                                <i class="fa fa-trash"></i> Deletar
+                            </a>
+
+                            <a th:if="${livro.isDeleted != null}" th:href="@{/restaurar(id=${livro.id})}" class="btn btn-xs btn-success" title="Restaurar">
+                                <i class="fa fa-refresh"></i> Restaurar
+                            </a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(livros)}">
+                        <td colspan="8" class="text-center text-muted" style="padding: 20px;">Nenhum livro registrado no banco de dados.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
