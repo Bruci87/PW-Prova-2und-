@@ -1,52 +1,109 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Detalhes do Livro</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Livro - Livraria EAJ</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #FBFBFC; }
+        #top-header { background-color: #15161D; padding-top: 10px; padding-bottom: 10px; }
+        .header-links li { display: inline-block; margin-right: 15px; }
+        .header-links li a { color: #B9BABC; text-decoration: none; font-size: 12px; }
+        #header { background-color: #1E1F29; padding-top: 20px; padding-bottom: 20px; border-bottom: 3px solid #D10024; }
+        .main-nav li { display: inline-block; margin-right: 20px; }
+        .main-nav li a { color: #FFF; font-weight: 500; text-decoration: none; font-size: 15px; }
+        .main-nav li a:hover { color: #D10024; }
+        .header-ctn a { color: #FFF; text-decoration: none; position: relative; display: inline-block; }
+        .header-ctn .qty { position: absolute; right: -15px; top: -10px; width: 18px; height: 18px; line-height: 18px; text-align: center; border-radius: 50%; font-size: 10px; color: #FFF; background-color: #D10024; }
+        .detail-container { background: #FFF; border: 1px solid #E4E7ED; border-radius: 4px; padding: 30px; box-shadow: 0px 2px 5px rgba(0,0,0,0.03); margin-top: 40px; margin-bottom: 40px; }
+        .book-title { font-weight: 700; color: #15161D; margin-top: 0; text-transform: uppercase; font-size: 24px; }
+        .book-author { font-size: 14px; color: #8D99AE; margin-bottom: 20px; }
+        .price-tag { font-size: 28px; color: #D10024; font-weight: 700; margin-bottom: 20px; }
+        .badge-category { background-color: #E4E7ED; color: #2B2D42; font-weight: 700; text-transform: uppercase; padding: 5px 12px; font-size: 11px; border-radius: 2px; display: inline-block; margin-bottom: 20px; }
+        .btn-add { background-color: #D10024; border-color: #D10024; color: #FFF; font-weight: 700; text-transform: uppercase; padding: 12px 30px; transition: 0.2s; border-radius: 4px; display: inline-block; text-decoration: none; }
+        .btn-add:hover { background-color: #A6001C; border-color: #A6001C; color: #FFF; }
+        #footer { background-color: #15161D; color: #B9BABC; padding: 30px 0; margin-top: 60px; }
+    </style>
 </head>
 <body>
-<div layout:fragment="content" class="container mt-5">
 
-    <div class="card shadow-sm border-0" style="background: #FFF; border-radius: 4px;">
-        <div class="card-body p-4">
-            <div class="row">
-                <div class="col-md-5 text-center p-4" style="background: #fcfcfc; border-right: 1px solid #F0F0F0;">
-                    <img th:src="@{/capa.jpg}" class="img-fluid" alt="Capa do Livro" style="max-height: 400px; object-fit: contain;">
-                </div>
+<div id="top-header">
+    <div class="container">
+        <ul class="header-links list-inline pull-left" style="margin: 0;">
+            <li><a href="#"><i class="fa fa-phone"></i> +55 (84) 9999-9999</a></li>
+            <li><a href="#"><i class="fa fa-envelope-o"></i> eaj@ufrn.br</a></li>
+        </ul>
+        <ul class="header-links list-inline pull-right" style="margin: 0;">
+            <li sec:authorize="isAuthenticated()"><span style="color: #FFF; font-weight: 700;"><i class="fa fa-user"></i> Olá, <span sec:authentication="name" style="color: #D10024;">Usuário</span>!</span></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" style="font-weight: 700; margin-left: 10px;"><i class="fa fa-sign-out"></i> Sair</a></li>
+        </ul>
+    </div>
+</div>
 
-                <div class="col-md-7 p-4 d-flex flex-column">
-                    <span class="badge bg-danger text-uppercase mb-2 px-3 py-2 align-self-start" style="font-weight: 700; background-color: #D10024 !important;" th:text="${livro.category}">Categoria</span>
-
-                    <h2 class="text-uppercase fw-bold mb-1" style="color: #15161D; font-size: 28px;" th:text="${livro.title}">Título do Livro</h2>
-                    <h5 class="text-muted mb-4" th:text="'Autor de destaque: ' + ${livro.author}">Autor</h5>
-
-                    <hr style="border-color: #E4E7ED;">
-
-                    <div class="my-3 p-3 bg-light rounded" style="border-left: 4px solid #15161D;">
-                        <p class="mb-1" style="font-size: 13px; color: #666;"><i class="fa fa-barcode me-2"></i> <strong>Código ISBN:</strong> <span th:text="${livro.isbn}"></span></p>
-                        <p class="mb-0" style="font-size: 13px; color: #666;"><i class="fa fa-shield-alt me-2"></i> <strong>Garantia de Entrega:</strong> Produto Original TADS Bookstore</p>
-                    </div>
-
-                    <div class="mt-4 mb-4">
-                        <small class="text-uppercase text-muted d-block mb-1" style="font-weight: 700;">Preço do Livro:</small>
-                        <h2 class="fw-bold" style="color: #D10024; font-size: 36px;"
-                            th:text="'R$ ' + ${#numbers.formatDecimal(livro.price, 1, 2)}">R$ 0.00</h2>
-                    </div>
-
-                    <div class="d-flex gap-2 mt-auto pt-4">
-                        <a th:href="@{/index}" class="btn btn-outline-secondary px-4 text-uppercase fw-bold" style="font-size: 13px; border-radius: 4px;">
-                            <i class="fa fa-arrow-left me-2"></i> Voltar à Vitrine
-                        </a>
-                        <a th:href="@{/adicionarCarrinho(id=${livro.id})}" class="btn text-white px-5 text-uppercase fw-bold flex-grow-1" style="background-color: #D10024; font-size: 13px; border-radius: 4px;">
-                            <i class="fa fa-shopping-cart me-2"></i> Adicionar ao Carrinho de Compras
-                        </a>
-                    </div>
+<div id="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <a th:href="@{/index}" style="text-decoration: none;"><h2 style="color: white; margin: 0; font-weight: 700;">Livraria<span style="color: #D10024;">EAJ</span></h2></a>
+            </div>
+            <div class="col-md-6">
+                <ul class="main-nav list-inline" style="margin: 0; padding-top: 5px;">
+                    <li><a th:href="@{/index}">Início</a></li>
+                    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin}">Painel Admin</a></li>
+                    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/cadastro}">Cadastrar Livro</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 text-right">
+                <div class="header-ctn" style="padding-top: 5px;">
+                    <a th:href="@{/verCarrinho}">
+                        <i class="fa fa-shopping-cart" style="color: #FFF;"></i> <span style="color: #FFF; font-weight: 500;">Meu Carrinho</span>
+                        <div class="qty" th:text="${session.carrinho != null ? session.carrinho.size() : 0}">0</div>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
+
+<div class="container">
+    <div class="detail-container">
+        <div class="row">
+
+            <div class="col-md-5 text-center" style="margin-bottom: 20px;">
+                <div style="background: #FAF9F9; padding: 20px; border: 1px solid #E4E7ED; border-radius: 4px; display: inline-block; width: 100%; max-width: 350px;">
+                    <img th:src="${livro.imgUrl != null and livro.imgUrl != ''} ? ${livro.imgUrl} : '/capa.jpg'" style="max-height: 400px; max-width: 100%; object-fit: contain;" />
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <span class="badge-category" th:text="${livro.category != null ? livro.category : 'Geral'}">Categoria</span>
+                <h2 class="book-title" th:text="${livro.title}">Título do Livro</h2>
+                <p class="book-author">Por: <strong th:text="${livro.author}">Nome do Autor</strong></p>
+
+                <hr style="border-top: 1px solid #E4E7ED; margin-bottom: 25px;" />
+
+                <div class="price-tag" th:text="'R$ ' + ${#numbers.formatDecimal(livro.price, 1, 2, 'POINT')}">R$ 0,00</div>
+
+                <div style="margin-top: 30px;">
+                    <a th:href="@{/adicionarCarrinho(id=${livro.id})}" class="btn-add">
+                        <i class="fa fa-shopping-cart" style="margin-right: 10px;"></i> Adicionar ao Carrinho
+                    </a>
+                    <a th:href="@{/index}" class="btn btn-default" style="font-weight: 700; text-transform: uppercase; padding: 12px 25px; margin-left: 10px; border-radius: 4px; height: 47px; line-height: 23px;">Voltar</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="footer"><div class="container text-center"><p style="margin: 0;">&copy; 2026 Escola Agrícola de Jundiaí - UFRN.</p></div></div>
 </body>
 </html>

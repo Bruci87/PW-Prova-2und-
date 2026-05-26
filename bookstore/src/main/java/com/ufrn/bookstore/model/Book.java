@@ -1,7 +1,6 @@
 package com.ufrn.bookstore.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_books")
@@ -11,43 +10,35 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // QUESTÃO 10: Modificado para Long ou LocalDateTime conforme seu Controller pedir
-    // Como seu controller usa System.currentTimeMillis(), alteramos para Long!
-    private Long isDeleted;
-
-    private String imgUrl;
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "author")
     private String author;
-    private String isbn;
-    private String category;
+
+    @Column(name = "price")
     private Double price;
 
-    // =========================================================================
-    // GETTERS E SETTERS MANUAIS (Para o IntelliJ parar de dar erro)
-    // =========================================================================
+    @Column(name = "category")
+    private String category;
 
+    @Column(name = "img_url")
+    private String imgUrl;
+
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
+
+    // Construtor padrão obrigatório
+    public Book() {
+    }
+
+    // Todos os Getters e Setters completos
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Long isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public String getImgUrl() {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
     }
 
     public String getTitle() {
@@ -66,12 +57,12 @@ public class Book {
         this.author = author;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getCategory() {
@@ -82,11 +73,19 @@ public class Book {
         this.category = category;
     }
 
-    public Double getPrice() {
-        return price;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }

@@ -38,29 +38,25 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(admin, visitante);
     }
 
-    // =========================================================================
-    // QUESTÃO 15: Filtros de Acesso (RBAC) e FormLogin (SUBSTITUÍDO AQUI)
-    // =========================================================================
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 1. Configuração das regras de autorização de requisições (Túnel de Filtros)
+                .csrf(csrf -> csrf.disable()) // Desativado para aceitar o POST do cadastro
+
+                // 🚨 ADICIONADO: Configura os headers para não bloquear o carregamento de imagens de servidores externos
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.disable())
+                )
+
                 .authorizeHttpRequests(authorize -> authorize
-                        // CORRIGIDO: Liberados arquivos estáticos, a imagem local capa.jpg e as rotas de compras
                         .requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/vendor/**", "/capa.jpg", "/index", "/verCarrinho", "/adicionarCarrinho", "/detalhe/**").permitAll()
-
-                        // Exigência da Q15: Rotas de cadastro, salvamento, edição, exclusão e restauração exclusivas do ADMIN
                         .requestMatchers("/admin", "/cadastro", "/salvar", "/editar", "/deletar", "/restaurar").hasRole("ADMIN")
-
-                        // Exigência da Q15: Todas as outras rotas do sistema requerem apenas que o usuário esteja autenticado
                         .anyRequest().authenticated()
                 )
-                // 2. Exigência da Q15: Habilita o formulário de login padrão do Spring Security
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/index", true) // Após logar com sucesso, joga o usuário direto para a vitrine
+                        .defaultSuccessUrl("/index", true)
                         .permitAll()
                 )
-                // Habilita o logout padrão para o usuário conseguir deslogar se necessário
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login")
                         .permitAll()

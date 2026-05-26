@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.HttpSession; // Atualizado para Spring Boot 3 / Jakarta
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,13 +29,19 @@ public class BookController {
     }
 
     /**
-     * 2. SALVAR LIVRO
-     * Salva direto o link que você colocar no formulário.
-     * 🛠️ ATENÇÃO: Se o seu método não for getImgUrl, mude o nome dele aqui embaixo!
+     * 2. EXIBIR FORMULÁRIO DE CADASTRO
+     */
+    @GetMapping("/cadastro")
+    public String exibirFormularioCadastro(Model model) {
+        model.addAttribute("book", new Book());
+        return "cadastro";
+    }
+
+    /**
+     * 3. SALVAR LIVRO
      */
     @PostMapping("/salvar")
     public String salvarLivro(@ModelAttribute Book livro, RedirectAttributes redirectAttributes) {
-        // Se vier em branco, coloca a foto padrão do projeto
         if (livro.getImgUrl() == null || livro.getImgUrl().trim().isEmpty()) {
             livro.setImgUrl("/capa.jpg");
         }
@@ -47,7 +53,33 @@ public class BookController {
     }
 
     /**
-     * 3. ADICIONAR AO CARRINHO
+     * 4. DETALHE DO LIVRO
+     */
+    @GetMapping("/detalhe/{id}")
+    public String exibirDetalhes(@PathVariable("id") Long id, Model model) {
+        Book livro = bookRepository.findById(id).orElse(null);
+
+        if (livro == null) {
+            return "redirect:/index";
+        }
+
+        model.addAttribute("livro", livro);
+        return "detalhe";
+    }
+
+    /**
+     * 5. PAINEL ADMINISTRATIVO (SOLUÇÃO DO PROBLEMA DE ACESSO)
+     * 🛠️ ADICIONADO: Renderiza a listagem de gerenciamento exclusiva para o ADMIN.
+     */
+    @GetMapping("/admin")
+    public String exibirPainelAdmin(Model model) {
+        List<Book> listaLivros = bookRepository.findAll();
+        model.addAttribute("livros", listaLivros);
+        return "admin"; // 🚨 Vai buscar o arquivo src/main/resources/templates/admin.html
+    }
+
+    /**
+     * 6. ADICIONAR AO CARRINHO
      */
     @GetMapping("/adicionarCarrinho")
     public String adicionarAoCarrinho(@RequestParam("id") Long id, HttpSession session) {
@@ -68,7 +100,7 @@ public class BookController {
     }
 
     /**
-     * 4. VISUALIZAR CARRINHO
+     * 7. VISUALIZAR CARRINHO
      */
     @GetMapping("/verCarrinho")
     public String verCarrinho(HttpSession session, Model model) {
@@ -91,7 +123,7 @@ public class BookController {
     }
 
     /**
-     * 5. FINALIZAR COMPRA
+     * 8. FINALIZAR COMPRA
      */
     @GetMapping("/finalizarCompra")
     public String finalizarCompra(HttpSession session, RedirectAttributes redirectAttributes) {
