@@ -1,68 +1,123 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Cadastro de Livros</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Livro - Livraria EAJ</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #FBFBFC; }
+        #top-header { background-color: #15161D; padding-top: 10px; padding-bottom: 10px; }
+        .header-links li { display: inline-block; margin-right: 15px; }
+        .header-links li a { color: #B9BABC; text-decoration: none; font-size: 12px; }
+        .header-links li a:hover { color: #D10024; }
+        #header { background-color: #1E1F29; padding-top: 20px; padding-bottom: 20px; border-bottom: 3px solid #D10024; }
+        .main-nav li { display: inline-block; margin-right: 20px; }
+        .main-nav li a { color: #FFF; font-weight: 500; text-decoration: none; font-size: 15px; }
+        .main-nav li a:hover { color: #D10024; }
+        .form-container { background: #FFF; border: 1px solid #E4E7ED; border-radius: 4px; padding: 30px; box-shadow: 0px 2px 5px rgba(0,0,0,0.03); margin-top: 40px; margin-bottom: 40px; }
+        .form-group label { font-weight: 700; color: #15161D; text-transform: uppercase; font-size: 12px; }
+        .form-control { border-radius: 4px; border: 1px solid #E4E7ED; height: 45px; }
+        .form-control:focus { border-color: #D10024; box-shadow: none; }
+        .btn-success { background-color: #D10024; border-color: #D10024; font-weight: 700; text-transform: uppercase; padding: 12px 30px; transition: 0.2s; }
+        .btn-success:hover, .btn-success:focus { background-color: #A6001C; border-color: #A6001C; }
+        #footer { background-color: #15161D; color: #B9BABC; padding: 30px 0; margin-top: 60px; }
+    </style>
 </head>
 <body>
 
-<div layout:fragment="content" class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white" style="background-color: #15161D !important;">
-                    <h4 class="mb-0"><i class="fa fa-book-medical me-2"></i> Cadastrar / Editar Livro</h4>
-                </div>
-                <div class="card-body p-4">
+<div id="top-header">
+    <div class="container">
+        <ul class="header-links list-inline pull-left" style="margin: 0;">
+            <li><a href="#"><i class="fa fa-phone"></i> +55 (84) 9999-9999</a></li>
+            <li><a href="#"><i class="fa fa-envelope-o"></i> eaj@ufrn.br</a></li>
+            <li><a href="#"><i class="fa fa-map-marker"></i> Macaíba, RN</a></li>
+        </ul>
+        <ul class="header-links list-inline pull-right" style="margin: 0;">
+            <li sec:authorize="isAuthenticated()"><span style="color: #FFF; font-weight: 700;"><i class="fa fa-user"></i> Olá, <span sec:authentication="name" style="color: #D10024;">Usuário</span>!</span></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}" style="font-weight: 700; margin-left: 10px;"><i class="fa fa-sign-out"></i> Sair</a></li>
+        </ul>
+    </div>
+</div>
 
-                    <form th:action="@{/salvar}" th:object="${bookFormDTO}" method="post">
-
-                        <input type="hidden" th:field="*{id}" />
-
-                        <div class="mb-3">
-                            <label for="title" class="form-label fw-bold">Título do Livro</label>
-                            <input type="text" th:field="*{title}" class="form-control" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" id="title">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="author" class="form-label fw-bold">Autor</label>
-                            <input type="text" th:field="*{author}" class="form-control" th:classappend="${#fields.hasErrors('author')} ? 'is-invalid'" id="author">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="price" class="form-label fw-bold">Preço (R$)</label>
-                                <input type="number" step="0.01" th:field="*{price}" class="form-control" th:classappend="${#fields.hasErrors('price')} ? 'is-invalid'" id="price">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="category" class="form-label fw-bold">Categoria / Gênero</label>
-                                <input type="text" th:field="*{category}" class="form-control" th:classappend="${#fields.hasErrors('category')} ? 'is-invalid'" id="category">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="isbn" class="form-label fw-bold">Código ISBN (Formato: ISBN-978-X)</label>
-                            <input type="text" th:field="*{isbn}" class="form-control" th:classappend="${#fields.hasErrors('isbn')} ? 'is-invalid'" id="isbn" placeholder="Ex: ISBN-978-1">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></div>
-                        </div>
-
-                        <div class="d-flex justify-content-end gap-2">
-                            <a th:href="@{/admin}" class="btn btn-secondary">Cancelar</a>
-                            <button type="submit" class="btn btn-success" style="background-color: #D10024 !important; border-color: #D10024 !important;"><i class="fa fa-save me-1"></i> Salvar Livro</button>
-                        </div>
-                    </form>
-
-                </div>
+<div id="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <a th:href="@{/index}" style="text-decoration: none;"><h2 style="color: white; margin: 0; font-weight: 700;">Livraria<span style="color: #D10024;">EAJ</span></h2></a>
+            </div>
+            <div class="col-md-9">
+                <ul class="main-nav list-inline" style="margin: 0; padding-top: 5px;">
+                    <li><a th:href="@{/index}">Início</a></li>
+                    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin}">Painel Admin</a></li>
+                    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/cadastro}" style="color: #D10024; font-weight: 700;">Cadastrar Livro</a></li>
+                </ul>
             </div>
         </div>
     </div>
 </div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+
+            <div class="form-container">
+                <h3 class="text-uppercase" style="font-weight: 700; color: #15161D; margin-top: 0; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #E4E7ED;">
+                    <i class="fa fa-plus-circle" style="color: #D10024; margin-right: 10px;"></i> Cadastrar Novo Livro
+                </h3>
+
+                <form th:action="@{/salvar}" method="POST">
+
+                    <div class="form-group">
+                        <label th:for="title">Título do Livro</label>
+                        <input type="text" name="title" id="title" class="form-control" placeholder="Ex: Spring Boot da Massa" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label th:for="author">Autor</label>
+                        <input type="text" name="author" id="author" class="form-control" placeholder="Ex: Professor Taniro" required />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label th:for="price">Preço (R$)</label>
+                                <input type="number" step="0.01" name="price" id="price" class="form-control" placeholder="0.00" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label th:for="category">Categoria</label>
+                                <input type="text" name="category" id="category" class="form-control" placeholder="Ex: Programação, BD" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label th:for="imgUrl">Link da Imagem (URL)</label>
+                        <input type="text" name="imgUrl" id="imgUrl" class="form-control" placeholder="Cole aqui a URL da imagem (.jpg, .png)" />
+                        <p class="help-block" style="font-size: 11px; color: #8D99AE;">Deixe em branco para usar a capa padrão do sistema.</p>
+                    </div>
+
+                    <div class="text-right">
+                        <a th:href="@{/index}" class="btn btn-default" style="font-weight: 700; text-transform: uppercase; padding: 12px 25px; margin-right: 10px; border-radius: 4px;">Cancelar</a>
+                        <button type="submit" class="btn btn-success">Salvar Livro</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="footer"><div class="container text-center"><p style="margin: 0;">&copy; 2026 Escola Agrícola de Jundiaí - UFRN. Disciplina de Programação Web.</p></div></div>
 </body>
 </html>

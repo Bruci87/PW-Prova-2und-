@@ -1,88 +1,181 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Meu Carrinho de Compras</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Carrinho - Livraria EAJ</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FBFBFC;
+        }
+        #top-header {
+            background-color: #15161D;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .header-links li {
+            display: inline-block;
+            margin-right: 15px;
+        }
+        .header-links li a {
+            color: #B9BABC;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .header-links li a:hover {
+            color: #D10024;
+        }
+        #header {
+            background-color: #1E1F29;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #D10024;
+        }
+        .main-box {
+            background: #FFF;
+            border: 1px solid #E4E7ED;
+            border-radius: 4px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+        }
+        .table > tragedies > tr > th, .table > thead > tr > th {
+            background-color: #15161D;
+            color: #FFF;
+            text-transform: uppercase;
+            font-size: 12px;
+            border: none;
+            padding: 12px;
+        }
+        .cart-total-title {
+            color: #8D99AE;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 700;
+            display: block;
+        }
+        .cart-total-price {
+            color: #D10024;
+            font-weight: 700;
+            margin: 5px 0 20px 0;
+            font-size: 32px;
+        }
+        #footer {
+            background-color: #15161D;
+            color: #B9BABC;
+            padding: 30px 0;
+            margin-top: 60px;
+        }
+    </style>
 </head>
 <body>
 
-<div layout:fragment="content" class="container mt-5">
+<div id="top-header">
+    <div class="container">
+        <ul class="header-links list-inline pull-left" style="margin: 0;">
+            <li><a href="#"><i class="fa fa-phone"></i> +55 (84) 9999-9999</a></li>
+            <li><a href="#"><i class="fa fa-envelope-o"></i> eaj@ufrn.br</a></li>
+            <li><a href="#"><i class="fa fa-map-marker"></i> Macaíba, RN</a></li>
+        </ul>
+        <ul class="header-links list-inline pull-right" style="margin: 0;">
+            <li><span style="color: #FFF; font-weight: 700;"><i class="fa fa-user"></i> Olá, admin!</span></li>
+            <li><a th:href="@{/logout}" style="font-weight: 700;"><i class="fa fa-sign-out"></i> Sair</a></li>
+        </ul>
+    </div>
+</div>
 
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <h2 class="fw-bold text-uppercase d-flex align-items-center" style="color: #15161D; font-size: 24px; border-bottom: 2px solid #E4E7ED; padding-bottom: 15px;">
-                <i class="fa fa-shopping-cart me-3" style="color: #D10024;"></i> Itens no meu Carrinho
-            </h2>
+<div id="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <a th:href="@{/index}" style="text-decoration: none;">
+                    <h2 style="color: white; margin: 5px 0 0 0; font-weight: 700;">Livraria<span style="color: #D10024;">EAJ</span></h2>
+                </a>
+            </div>
+            <div class="col-md-9 text-right" style="padding-top: 10px;">
+                <a th:href="@{/index}" style="color: white; margin-right: 20px; font-weight: 500; text-decoration: none;">Vitrine</a>
+                <a th:href="@{/admin}" style="color: #D10024; font-weight: 700; text-decoration: none;">Painel Admin</a>
+            </div>
         </div>
     </div>
+</div>
 
+<div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="card border-0 shadow-sm" style="background: #FFF; border-radius: 6px; overflow: hidden;">
-                <div class="card-body p-0">
 
-                    <table class="table table-hover mb-0" style="vertical-align: middle;">
+            <div class="main-box">
+                <h3 class="text-uppercase" style="font-weight: 700; color: #15161D; margin-top: 0; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #E4E7ED;">
+                    <i class="fa fa-shopping-cart" style="color: #D10024; margin-right: 10px;"></i> Itens no meu Carrinho
+                </h3>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" style="vertical-align: middle;">
                         <thead>
-                        <tr style="background-color: #15161D; color: #FFF; font-size: 13px; text-transform: uppercase;">
-                            <th style="width: 120px;" class="text-center py-3 px-4">Capa</th>
-                            <th class="py-3">Título do Livro</th>
-                            <th class="py-3">Autor</th>
-                            <th class="py-3">Categoria</th>
-                            <th class="text-end py-3 px-4" style="width: 150px;">Preço</th>
+                        <tr>
+                            <th style="width: 100px;" class="text-center">Capa</th>
+                            <th>Título do Livro</th>
+                            <th style="width: 200px;">Autor</th>
+                            <th style="width: 150px;">Categoria</th>
+                            <th style="width: 150px;" class="text-right">Preço</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="item : ${itensCarrinho}" style="border-bottom: 1px solid #F0F0F0; transition: 0.2s;">
-                            <td class="text-center py-3 px-4">
-                                <div style="background: #fcfcfc; padding: 5px; border-radius: 4px; border: 1px solid #E4E7ED; display: inline-block;">
-                                    <img th:src="@{/capa.jpg}" alt="Capa" style="max-height: 70px; max-width: 50px; object-fit: contain; display: block; margin: 0 auto;" />
+                        <tr th:each="item : ${itensCarrinho}">
+                            <td class="text-center" style="vertical-align: middle;">
+                                <div style="background: #fff; padding: 2px; border: 1px solid #E4E7ED; display: inline-block; border-radius: 4px;">
+                                    <img th:src="@{/img/book1.png}" alt="Capa" style="max-height: 55px; max-width: 40px; object-fit: contain; display: block;" />
                                 </div>
                             </td>
-                            <td class="py-3 fw-bold" style="color: #15161D; font-size: 15px;" th:text="${item.title}"></td>
-                            <td class="py-3 text-secondary" style="font-size: 14px;" th:text="${item.author}"></td>
-                            <td class="py-3"><span class="badge bg-light text-dark border text-uppercase" style="font-size: 11px; font-weight: 600; padding: 5px 10px;" th:text="${item.category}">Categoria</span></td>
-                            <td class="text-end py-3 px-4 fw-bold" style="color: #D10024; font-size: 16px;"
-                                th:text="'R$ ' + ${item.price ?: 0.00}"></td>
-                        </tr>
-
-                        <tr th:if="${#lists.isEmpty(itensCarrinho)}">
-                            <td colspan="5" class="text-center py-5 text-muted" style="background: #FAF9F9;">
-                                <i class="fa fa-shopping-basket fa-3x mb-3 text-muted" style="opacity: 0.4;"></i>
-                                <p class="mb-1 fw-bold" style="font-size: 16px; color: #15161D;">Seu carrinho está vazio no momento</p>
-                                <small class="text-secondary d-block mb-3">Navegue pela nossa vitrine para adicionar excelentes leituras.</small>
-                                <a th:href="@{/index}" class="btn btn-sm text-white text-uppercase fw-bold px-3 py-2" style="background-color: #15161D; font-size: 12px; border-radius: 4px;">
-                                    <i class="fa fa-arrow-left me-1"></i> Ir para a Vitrine
-                                </a>
+                            <td style="vertical-align: middle; font-weight: 700; color: #15161D; font-size: 14px;" th:text="${item.title}"></td>
+                            <td style="vertical-align: middle; color: #8D99AE;" th:text="${item.author}"></td>
+                            <td style="vertical-align: middle;">
+                                <span class="label label-default" style="background-color: #F8F9FA; color: #2B2D42; border: 1px solid #E4E7ED; text-transform: uppercase; padding: 4px 8px; font-weight: 600;" th:text="${item.category}">Categoria</span>
                             </td>
+                            <td class="text-right" style="vertical-align: middle; font-weight: 700; color: #D10024; font-size: 15px;"
+                                th:text="'R$ ' + ${item.price ?: 0.00}"></td>
                         </tr>
                         </tbody>
                     </table>
+                </div>
 
-                    <div th:if="${!#lists.isEmpty(itensCarrinho)}" class="p-4 d-flex flex-column flex-md-row justify-content-between align-items-center" style="background: #FBFBFC; border-top: 1px solid #E4E7ED;">
-                        <div>
-                            <a th:href="@{/index}" class="btn btn-outline-secondary text-uppercase fw-bold px-4 py-2" style="font-size: 13px; border-radius: 4px;">
-                                <i class="fa fa-arrow-left me-2"></i> Continuar Comprando
-                            </a>
-                        </div>
-
-                        <div class="text-center text-md-end mt-4 mt-md-0">
-                            <div class="mb-3">
-                                <span class="text-uppercase text-muted fw-bold" style="font-size: 12px; letter-spacing: 1px;">Total do Pedido:</span>
-                                <h3 class="fw-bold m-0 mt-1" style="color: #D10024; font-size: 28px;"
-                                    th:text="'R$ ' + ${totalGeral ?: 0.00}">R$ 0,00</h3>
-                            </div>
-
-                            <a th:href="@{/finalizarCompra}" class="btn text-white text-uppercase fw-bold px-5 py-3 shadow-sm"
-                               style="background-color: #D10024; font-size: 14px; border-radius: 4px; letter-spacing: 0.5px;">
-                                <i class="fa fa-check me-2"></i> Finalizar Compra
-                            </a>
-                        </div>
+                <div class="row" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #E4E7ED;">
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <a th:href="@{/index}" class="btn btn-default text-uppercase" style="font-weight: 700; font-size: 12px; padding: 12px 24px; border-radius: 4px; border: 1px solid #E4E7ED; letter-spacing: 0.5px;">
+                            <i class="fa fa-arrow-left" style="margin-right: 8px;"></i> Continuar Comprando
+                        </a>
                     </div>
 
+                    <div class="col-md-6 col-sm-6 col-xs-12 text-right">
+                        <div>
+                            <span class="cart-total-title">Total do Pedido:</span>
+                            <h3 class="cart-total-price" th:text="'R$ ' + ${totalGeral ?: 0.00}">R$ 0,00</h3>
+                        </div>
+
+                        <a th:href="@{/finalizarCompra}" class="btn btn-danger text-uppercase"
+                           style="background-color: #D10024; border-color: #D10024; font-weight: 700; font-size: 14px; padding: 14px 35px; border-radius: 4px; letter-spacing: 1px;">
+                            <i class="fa fa-check" style="margin-right: 8px;"></i> Finalizar Compra
+                        </a>
+                    </div>
                 </div>
+
             </div>
+
         </div>
+    </div>
+</div>
+
+<div id="footer">
+    <div class="container text-center">
+        <p style="margin: 0;">&copy; 2026 Escola Agrícola de Jundiaí - UFRN. Disciplina de Programação Web.</p>
     </div>
 </div>
 
